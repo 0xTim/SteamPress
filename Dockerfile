@@ -1,9 +1,11 @@
-FROM swift:4
+FROM swift:5.0.2
 
 WORKDIR /package
 
 COPY . ./
 
-RUN swift package --enable-prefetching resolve
+RUN apt-get -qq update && apt-get install -y \
+  libssl-dev zlib1g-dev \
+  && rm -r /var/lib/apt/lists/*
 RUN swift package clean
 CMD swift test
