@@ -8,15 +8,23 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-16.04]
-    
+        os: [ubuntu-18.04, ubuntu-16.04, macOS-latest]
+
     steps:
     - uses: actions/checkout@v1
     - name: Run unit tests
       run: |
-        docker build --tag unit-tests -f unitTests.dockerfile .
-        docker run unit-tests
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            swift test
+        else
+          docker build --tag unit-tests -f unitTests.dockerfile .
+          docker run unit-tests
+        fi
     - name: Build library in release mode
       run: |
-        docker build --tag release-library -f releaseLibrary.dockerfile .
-        docker run release-library
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            swift build -c release
+        else
+          docker build --tag release-library -f releaseLibrary.dockerfile .
+          docker run release-library
+        fi
