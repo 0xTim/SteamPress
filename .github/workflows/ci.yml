@@ -14,7 +14,9 @@ jobs:
     - uses: actions/checkout@v1
     - name: Run unit tests
       run: |
-        docker build --tag steampress .
-        docker run steampress
-    - name: Build release modes
-      run: echo "We should implement this"
+        docker build --tag unit-tests -f unitTests.dockerfile .
+        docker run unit-tests
+    - name: Build library in release mode
+      run: |
+        docker build --tag release-library -f releaseLibrary.dockerfile .
+        docker run release-library
