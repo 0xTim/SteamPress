@@ -13,6 +13,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Run unit tests
-      run: swift test
+      run: |
+        docker build --tag ${GITHUB_REPOSITORY} .
+        docker run ${GITHUB_REPOSITORY}
     - name: Build release modes
-      run: swift build -c release
+      run: echo "We should implement this"
