@@ -15,6 +15,7 @@ jobs:
     - name: Run unit tests
       run: |
         if [[ "$OSTYPE" == "darwin"* ]]; then
+            brew install vapor/tap/vapor
             swift test
         else
           docker build --tag unit-tests -f unitTests.dockerfile .
